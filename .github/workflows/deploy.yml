@@ -83,6 +83,7 @@ jobs:
           aws eks update-kubeconfig \
             --region ${{ env.AWS_REGION }} \
             --name   ${{ env.EKS_CLUSTER_NAME }}
+          aws sts get-caller-identity
 
       # ------------------------------------------------------------------ #
       # 8. Substitute image placeholder and apply Kubernetes manifests
