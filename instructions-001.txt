@@ -1,0 +1,13 @@
+I want to generate a sample hello world application that
+
+for local development,
+
+    1.  uses jdk 21 - F:\java\openlogic-openjdk-21.0.10+7-windows-x64
+    2.  maven - F:\aws\apache-maven-3.9.13-bin\apache-maven-3.9.13
+    3.  javalin - version 7.1.0
+
+after generating and testing the local aplication, I want to deploy this to an aws eks cluster using github actions.  
+Generate required files for deployment with details needed so that when I push my changes to github that theapplication is built and
+deployed automatically on pulling changes into the master branch.
+
+update readme.md with all instructions, planning, requirements and application details
