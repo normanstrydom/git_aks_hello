@@ -44,5 +44,3 @@ spec:
               port: 7100
             initialDelaySeconds: 5
             periodSeconds: 10
-      imagePullSecrets:
-        - name: ecr-registry-secret   # created via kubectl (see README)
