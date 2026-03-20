@@ -84,6 +84,7 @@ jobs:
             --region ${{ env.AWS_REGION }} \
             --name   ${{ env.EKS_CLUSTER_NAME }}
           aws sts get-caller-identity
+          kubectl get nodes
 
       # ------------------------------------------------------------------ #
       # 8. Substitute image placeholder and apply Kubernetes manifests
