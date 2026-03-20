@@ -8,7 +8,7 @@ on:
 env:
   AWS_REGION: us-east-1               # CHANGE: your AWS region
   ECR_REPOSITORY: hello-javalin       # CHANGE: your ECR repository name
-  EKS_CLUSTER_NAME: my-eks-cluster    # CHANGE: your EKS cluster name
+  EKS_CLUSTER_NAME: fabulous-bluegrass-dinosaur    # CHANGE: your EKS cluster name
 
 jobs:
   build-and-deploy:

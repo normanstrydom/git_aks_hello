@@ -23,8 +23,8 @@ COPY --from=builder /app/target/hello-javalin-1.0.0.jar app.jar
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
-EXPOSE 8080
+EXPOSE 7100
 
-ENV PORT=8080
+ENV PORT=7100
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

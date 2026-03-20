@@ -28,11 +28,31 @@ A minimal **Hello World** REST API built with [Javalin 7.1.0](https://javalin.io
 | AWS CLI | v2 |
 | kubectl | Compatible with your EKS version |
 
-### Environment variables (Windows — set once per session)
-```bat
-set JAVA_HOME=F:\java\openlogic-openjdk-21.0.10+7-windows-x64
-set PATH=%JAVA_HOME%\bin;F:\aws\apache-maven-3.9.13-bin\apache-maven-3.9.13\bin;%PATH%
+### Environment setup scripts
+
+Two scripts are provided to set `JAVA_HOME`, `MAVEN_HOME`, and `PATH` for the current session.
+
+#### PowerShell (`setenv.ps1`) — recommended
+
+> **First-time only:** PowerShell blocks unsigned local scripts by default. Run this once to allow them:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+> `RemoteSigned` lets local scripts run freely while requiring downloaded scripts to be signed.
+
+Dot-source the script so variables are set in your current session (the leading `. ` is required):
+```powershell
+. .\setenv.ps1
 ```
+
+#### CMD (`setenv.bat`)
+
+Open a plain Command Prompt (not PowerShell) and run:
+```bat
+setenv.bat
+```
+
+> **Note:** running `setenv.bat` from PowerShell will not work — `.bat` files run in a child process and their environment changes do not propagate back to the PowerShell session.
 
 ---
 
@@ -60,11 +80,17 @@ git_aks_hello/
 
 ## Local Development
 
-### 1. Verify toolchain
-```bash
-java -version        # should print openjdk 21
-mvn  -version        # should print Apache Maven 3.9.13
+### 1. Set environment
+
+PowerShell:
+```powershell
+. .\setenv.ps1
 ```
+CMD:
+```bat
+setenv.bat
+```
+Both scripts set `JAVA_HOME`, `MAVEN_HOME`, and `PATH`, then print both versions to confirm. See [Environment setup scripts](#environment-setup-scripts) for first-time PowerShell setup.
 
 ### 2. Build
 ```bash
@@ -76,7 +102,7 @@ This produces `target/hello-javalin-1.0.0.jar` — a self-contained fat JAR.
 ```bash
 java -jar target/hello-javalin-1.0.0.jar
 ```
-The server starts on **port 8080** by default.
+The server starts on **port 7100** by default.
 Override with the `PORT` environment variable:
 ```bash
 PORT=9090 java -jar target/hello-javalin-1.0.0.jar
@@ -101,11 +127,11 @@ PORT=9090 java -jar target/hello-javalin-1.0.0.jar
 docker build -t hello-javalin:local .
 
 # Run container
-docker run -p 8080:8080 hello-javalin:local
+docker run -p 7100:7100 hello-javalin:local
 
 # Test
-curl http://localhost:8080/
-curl http://localhost:8080/health
+curl http://localhost:7100/
+curl http://localhost:7100/health
 ```
 
 ---
@@ -131,8 +157,7 @@ eksctl create cluster \
 
 ### 3. Create an IAM user for CI/CD with the following policies
 - `AmazonEC2ContainerRegistryFullAccess`
-- `AmazonEKSClusterPolicy`
-- A custom inline policy to allow `eks:DescribeCluster` and `eks:UpdateCluster`
+- A custom inline policy with `eks:DescribeCluster` (required by `aws eks update-kubeconfig`)
 
 Generate **Access Key ID** and **Secret Access Key** for this user.
 

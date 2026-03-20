@@ -21,10 +21,10 @@ spec:
           #   sed -i "s|IMAGE_PLACEHOLDER|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/deployment.yaml
           image: IMAGE_PLACEHOLDER
           ports:
-            - containerPort: 8080
+            - containerPort: 7100
           env:
             - name: PORT
-              value: "8080"
+              value: "7100"
           resources:
             requests:
               cpu: "100m"
@@ -35,13 +35,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 7100
             initialDelaySeconds: 15
             periodSeconds: 20
           readinessProbe:
             httpGet:
               path: /health
-              port: 8080
+              port: 7100
             initialDelaySeconds: 5
             periodSeconds: 10
       imagePullSecrets:
