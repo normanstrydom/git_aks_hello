@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-javalin
+  namespace: default
+  labels:
+    app: hello-javalin
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-javalin
+  template:
+    metadata:
+      labels:
+        app: hello-javalin
+    spec:
+      containers:
+        - name: hello-javalin
+          # IMAGE is replaced at deploy time by GitHub Actions:
+          #   sed -i "s|IMAGE_PLACEHOLDER|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" k8s/deployment.yaml
+          image: IMAGE_PLACEHOLDER
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PORT
+              value: "8080"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+      imagePullSecrets:
+        - name: ecr-registry-secret   # created via kubectl (see README)
