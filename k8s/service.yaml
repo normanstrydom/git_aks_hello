@@ -6,7 +6,7 @@ metadata:
   labels:
     app: hello-javalin
 spec:
-  type: LoadBalancer          # Exposes the app via an AWS ELB
+  type: ClusterIP
   selector:
     app: hello-javalin
   ports:
